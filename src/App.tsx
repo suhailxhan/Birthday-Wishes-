@@ -18,6 +18,7 @@ import { GiftBoxModal } from "./components/GiftBoxModal";
 import { CustomizeModal } from "./components/CustomizeModal";
 import { FireworksCanvas } from "./components/FireworksCanvas";
 import { MusicPlayerBar } from "./components/MusicPlayerBar";
+import { BackToTopButton } from "./components/BackToTopButton";
 import { FloatingHeartsBackground } from "./components/FloatingHeartsBackground";
 import {
   playCandleBlowSound,
@@ -300,6 +301,9 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* Floating Back to Top Navigation */}
+      <BackToTopButton threshold={320} />
 
       {/* Floating Ambient Music Player */}
       <MusicPlayerBar />
