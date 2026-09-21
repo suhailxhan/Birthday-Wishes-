@@ -5,19 +5,14 @@ import {
   Sparkles,
   Gift,
   Mail,
-  Camera,
-  Settings,
   Flame,
-  Volume2,
-  Share2,
-  Check,
 } from "lucide-react";
+import { motion } from "motion/react";
 import { AppSettings } from "./types";
 import { ThreeBirthdayScene } from "./components/ThreeBirthdayScene";
 import { CandleControl } from "./components/CandleControl";
 import { HeroWish } from "./components/HeroWish";
 import { ReasonsWhyILoveYou } from "./components/ReasonsWhyILoveYou";
-import { MemoryGallery } from "./components/MemoryGallery";
 import { LoveLetterModal } from "./components/LoveLetterModal";
 import { GiftBoxModal } from "./components/GiftBoxModal";
 import { CustomizeModal } from "./components/CustomizeModal";
@@ -28,7 +23,6 @@ import {
   playCandleBlowSound,
   playCelebrationFanfare,
   playSparkleChime,
-  startRomanticBGM,
 } from "./utils/audio";
 
 const DEFAULT_SETTINGS: AppSettings = {
@@ -79,7 +73,6 @@ export default function App() {
   const [isGiftOpen, setIsGiftOpen] = useState(false);
   const [isCustomizeOpen, setIsCustomizeOpen] = useState(false);
   const [isFireworksActive, setIsFireworksActive] = useState(false);
-  const [isLinkCopied, setIsLinkCopied] = useState(false);
   const [heartDensity, setHeartDensity] = useState<"low" | "medium" | "high">("medium");
   const [showGlitterStars, setShowGlitterStars] = useState(true);
 
@@ -113,22 +106,6 @@ export default function App() {
   const handleRelightCandle = () => {
     setIsCandleLit(true);
     playSparkleChime();
-  };
-
-  const handleShare = () => {
-    if (navigator.share) {
-      navigator
-        .share({
-          title: `Happy Birthday, ${settings.girlfriendName}!`,
-          text: `A romantic 3D birthday celebration handcrafted with love for ${settings.girlfriendName}.`,
-          url: window.location.href,
-        })
-        .catch(() => {});
-    } else {
-      navigator.clipboard.writeText(window.location.href);
-      setIsLinkCopied(true);
-      setTimeout(() => setIsLinkCopied(false), 2200);
-    }
   };
 
   return (
@@ -192,18 +169,6 @@ export default function App() {
               <span className="hidden xs:inline">Surprise Gift</span>
             </button>
 
-            <button
-              onClick={handleShare}
-              className="p-2 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-rose-300 transition"
-              title="Share or Copy Link"
-            >
-              {isLinkCopied ? (
-                <Check className="w-3.5 h-3.5 text-emerald-400" />
-              ) : (
-                <Share2 className="w-3.5 h-3.5" />
-              )}
-            </button>
-
             {/* Toggle Glittering Stars */}
             <button
               onClick={() => setShowGlitterStars((prev) => !prev)}
@@ -241,38 +206,43 @@ export default function App() {
                 {heartDensity}
               </span>
             </button>
-
-            <button
-              onClick={() => setIsCustomizeOpen(true)}
-              className="p-2 rounded-full bg-rose-600/30 hover:bg-rose-600/50 border border-rose-500/40 text-rose-200 transition"
-              title="Personalize names & dates"
-            >
-              <Settings className="w-3.5 h-3.5" />
-            </button>
           </div>
         </div>
       </nav>
 
       {/* Main Container */}
-      <main className="relative z-10 flex flex-col items-center">
+      <main className="relative z-10 flex flex-col items-center w-full">
         {/* Hero Section */}
-        <HeroWish
-          settings={settings}
-          onOpenLetter={() => setIsLetterOpen(true)}
-          onOpenGift={() => setIsGiftOpen(true)}
-          onOpenCustomize={() => setIsCustomizeOpen(true)}
-          showGlitterStars={showGlitterStars}
-          onToggleGlitterStars={() => setShowGlitterStars((prev) => !prev)}
-          onTriggerFireworks={() => {
-            setIsFireworksActive(true);
-            playCelebrationFanfare();
-          }}
-        />
+        <motion.section
+          id="hero-section"
+          className="w-full"
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <HeroWish
+            settings={settings}
+            onOpenLetter={() => setIsLetterOpen(true)}
+            onOpenGift={() => setIsGiftOpen(true)}
+            onOpenCustomize={() => setIsCustomizeOpen(true)}
+            showGlitterStars={showGlitterStars}
+            onToggleGlitterStars={() => setShowGlitterStars((prev) => !prev)}
+            onTriggerFireworks={() => {
+              setIsFireworksActive(true);
+              playCelebrationFanfare();
+            }}
+          />
+        </motion.section>
 
-        {/* Central 3D Interactive Stage */}
-        <section
+        {/* Central 3D Interactive Stage (Cake) */}
+        <motion.section
           id="cake-section"
-          className="w-full max-w-5xl mx-auto px-4 py-6 flex flex-col items-center"
+          className="w-full max-w-5xl mx-auto px-4 py-8 sm:py-12 flex flex-col items-center"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
         >
           <div className="w-full aspect-square max-w-[620px] max-h-[580px] rounded-3xl overflow-hidden bg-gradient-to-b from-[#140b20]/70 via-[#190d29]/80 to-[#0c0814]/90 border border-rose-500/20 shadow-2xl relative">
             <ThreeBirthdayScene
@@ -292,13 +262,19 @@ export default function App() {
               wishesCount={wishesCount}
             />
           </div>
-        </section>
+        </motion.section>
 
         {/* 3D Reasons Why I Love You Cards */}
-        <ReasonsWhyILoveYou girlfriendName={settings.girlfriendName} />
-
-        {/* Polaroid Memory Scrapbook */}
-        <MemoryGallery girlfriendName={settings.girlfriendName} />
+        <motion.section
+          id="reasons-section"
+          className="w-full"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
+        >
+          <ReasonsWhyILoveYou girlfriendName={settings.girlfriendName} />
+        </motion.section>
       </main>
 
       {/* Footer */}

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Heart, Sparkles, Shuffle, Plus, Star, Smile, Flame, Moon, Sun, Award } from "lucide-react";
+import { motion } from "motion/react";
 import { LoveReason } from "../types";
 import { playSparkleChime } from "../utils/audio";
 
@@ -242,16 +243,24 @@ export const ReasonsWhyILoveYou: React.FC<ReasonsWhyILoveYouProps> = ({
 
       {/* 3D Flipping Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        {filteredReasons.map((reason) => {
+        {filteredReasons.map((reason, index) => {
           const isFlipped = !!flippedCards[reason.id];
           const isHighlighted = highlightedId === reason.id;
 
           return (
-            <div
+            <motion.div
               key={reason.id}
               id={`reason-card-${reason.id}`}
               onClick={() => toggleFlip(reason.id)}
               className="group h-56 perspective-1000 cursor-pointer select-none"
+              initial={{ opacity: 0, y: 24, scale: 0.96 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.1 }}
+              transition={{
+                duration: 0.6,
+                ease: [0.22, 1, 0.36, 1],
+                delay: (index % 4) * 0.08,
+              }}
             >
               <div
                 className={`relative w-full h-full preserve-3d transition-transform duration-700 rounded-2xl ${
@@ -305,7 +314,7 @@ export const ReasonsWhyILoveYou: React.FC<ReasonsWhyILoveYouProps> = ({
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           );
         })}
       </div>

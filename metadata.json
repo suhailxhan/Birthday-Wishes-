@@ -1,6 +1,6 @@
 {
   "name": "Happy Birthday Ashika - By Junaid",
-  "description": "An enchanting 3D romantic birthday celebration handcrafted by developer Junaid for Ashika, featuring an interactive 3D birthday cake with blowable candles, drifting floating hearts, glittering stars, a romantic love letter, memories, and musical ambiance.",
+  "description": "An enchanting 3D romantic birthday celebration handcrafted by developer Junaid for Ashika, featuring an interactive 3D birthday cake with blowable candles, drifting floating hearts, glittering stars, a romantic love letter, reasons why I love you, and musical ambiance.",
   "requestFramePermissions": ["microphone"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
