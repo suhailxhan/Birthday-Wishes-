@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Heart, Sparkles, Calendar, Clock, Crown, Edit3 } from "lucide-react";
+import { Heart, Sparkles, Calendar, Clock, Crown } from "lucide-react";
 import { AppSettings } from "../types";
 
 interface HeroWishProps {
   settings: AppSettings;
   onOpenLetter: () => void;
   onOpenGift: () => void;
-  onOpenCustomize: () => void;
+  onOpenCustomize?: () => void;
   onTriggerFireworks: () => void;
   showGlitterStars?: boolean;
   onToggleGlitterStars?: () => void;
@@ -53,13 +53,6 @@ export const HeroWish: React.FC<HeroWishProps> = ({
       <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-950/70 border border-rose-500/30 text-rose-300 text-xs tracking-wider uppercase backdrop-blur-md mb-4 shadow-lg shadow-rose-950/40">
         <Crown className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
         <span>To My Beloved {settings.nickname || "Princess"}</span>
-        <button
-          onClick={onOpenCustomize}
-          className="ml-1 text-rose-400 hover:text-white p-0.5 rounded transition"
-          title="Customize names & dates"
-        >
-          <Edit3 className="w-3 h-3" />
-        </button>
       </div>
 
       {/* Main Grand Romantic Typography */}
